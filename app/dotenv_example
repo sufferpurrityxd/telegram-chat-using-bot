@@ -1,0 +1,6 @@
+token=token_from_botfather
+database_name=postgres
+database_password=postgres
+database_user=postgres
+database_host=db
+database_port=5432
