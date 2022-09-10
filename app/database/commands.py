@@ -9,11 +9,11 @@ class DBCommands:
         """
     SET_USERS_WAITING = \
         """
-    UPDATE users SET in_waiting = true WHERE telegram_id=$1
+    UPDATE users SET in_waiting=true WHERE telegram_id=$1
         """
     CREATE_CHAT = \
         """
-    UPDATE users SET in_waiting = false, chatting_with =$1 WHERE telegram_id=$2
+    UPDATE users SET in_waiting=false, chatting_with =$1 WHERE telegram_id=$2
         """
     END_CHAT = \
         """
@@ -22,4 +22,8 @@ class DBCommands:
     GET_USER = \
         """
     SELECT * FROM users WHERE telegram_id=$1
+        """
+    STOP_WAITING = \
+        """
+    UPDATE users SET in_waiting=false WHERE telegram_id=$1
         """

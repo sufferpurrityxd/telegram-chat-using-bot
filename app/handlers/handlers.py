@@ -30,6 +30,16 @@ async def cmd_stopchat(message: types.Message):
         await message.bot.send_message(execute['request_user'], "You have completed the chat")
 
 
+async def cmd_stopwaiting(message: types.Message):
+    execute = await execute_command(message=message, stopwaiting=True)
+    if execute == 0:
+        await message.reply("You are not looking for an interlocutor")
+    elif execute == 1:
+        await message.reply("You are already chatting")
+    else:
+        await message.reply("Search canceled")
+        
+
 async def chat(message: types.Message):
     execute = await execute_command(message=message, chat=True)
     if execute == 0:
@@ -37,6 +47,6 @@ async def chat(message: types.Message):
     elif execute == 1:
         await message.reply("You are put on hold. When a suitable chat is found, I will let you know")
     elif execute == 3:
-        await message.reply("You are allready chatting")
+        await message.reply("You are already chatting")
     else:
         await message.bot.send_message(execute['chatting_with'], profainty_filter(execute["message"]))

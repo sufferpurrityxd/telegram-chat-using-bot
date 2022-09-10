@@ -3,7 +3,7 @@ from database.connection import get_connection
 commands = DBCommands()
 
 
-async def execute_command(message, adduser=False, startchat=False, stopchat=False, chat=True):
+async def execute_command(message, adduser=False, startchat=False, stopchat=False, chat=False, stopwaiting=False):
     conn = await get_connection()
     await conn.execute("""
     CREATE TABLE IF NOT EXISTS users
@@ -79,6 +79,23 @@ async def execute_command(message, adduser=False, startchat=False, stopchat=Fals
                         "request_user": message.from_user.id,
                         "chatting_with": row["chatting_with"]
                     }
+
+    if stopwaiting:
+        row = await conn.fetchrow(
+            commands.GET_USER,
+            message.from_user.id
+        )
+        if row:
+            if row["in_waiting"]:
+                await conn.execute(
+                    commands.STOP_WAITING,
+                    message.from_user.id
+                )
+            elif not row["in_waiting"]:
+                if row["chatting_with"]:
+                    return 1
+                else:
+                    return 0
     if chat:
         row = await conn.fetchrow(
             commands.GET_USER,
